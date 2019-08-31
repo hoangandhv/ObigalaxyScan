@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Android bitbucket" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/DemoGH" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/NCBConnect" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/SQLite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/TM_baitap2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/TM_recyclerView_thuchanh" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/TM_thuchanh3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/Thuchanh_Caculator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/tuhoc_recycleview" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GV_APP/vasscheckin" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/KhoaHocAndroidTechmasterT08-2019" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/KhoaHocAndroidTechmasterT08-2019-buoi9" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/KotlinBarCodeScanner-clone" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Myhoc_retrofit" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/NCBConnect" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/New folder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Recyclerview" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Retrofit-With-Kotlin-GITHUI" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Retrofit2Kotlin" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/SQLiteDBKotlin-ParhoLikhoCS" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ScanObiGalaxy2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TM_buoi3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TM_thuchanh3" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TMcaculator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Tuhoc_intent_fragment" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/android-lib-ZXingCaptureActivity-clone" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/danhbasql" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/navigation-component-tutorial" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/picasso" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/zxing-scanner-clone" vcs="Git" />
+  </component>
+</project>

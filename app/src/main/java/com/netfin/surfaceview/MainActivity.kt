@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.hardware.Camera
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +19,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.*
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -31,10 +35,11 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
     private var camera: Camera? = null
     private val neededPermissions = arrayOf(CAMERA, WRITE_EXTERNAL_STORAGE)
     private val INTENT_RESULT = 1
+    var client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        //requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         setContentView(R.layout.activity_main)
 
         val result = checkPermission()
@@ -175,7 +180,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
             // the preview.
             parameters.also { params ->
 
-                params.setPictureSize(1920,1080)
+                params.setPictureSize(1280,720)
                 parameters = params
             }
 
@@ -229,6 +234,21 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
             outStream = FileOutputStream(file)
             outStream.write(bytes)
             outStream.close()
+            val url = "http://10.10.10.43/api/upload"
+            POST(url, file,fileName, object: Callback {
+                override fun onResponse(call: Call?, response: Response) {
+                    val responseData = response.body()?.string()
+                    runOnUiThread{
+                        //println("----------------->>$responseData")
+                        Toast.makeText(this@MainActivity,"Thành công!",Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                override fun onFailure(call: Call?, e: IOException?) {
+                    //println("Request Failure.$e")
+                    Toast.makeText(this@MainActivity,"Lỗi. Vui lòng chụp lại!",Toast.LENGTH_LONG).show()
+                }
+            })
             Toast.makeText(this@MainActivity, "Picture Saved: $fileName", Toast.LENGTH_LONG).show()
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
@@ -240,6 +260,24 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
     companion object {
         const val REQUEST_CODE = 100
         var NAME_IMAGE: String = ""
+    }
+    fun POST(url: String, file: File,fileName:String, callback: Callback): Call {
+        Toast.makeText(this@MainActivity,"Vui lòng đợi!",Toast.LENGTH_LONG).show()
+        val formBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("content","123")
+            .addFormDataPart("image",fileName, RequestBody.create(MediaType.parse("image/jpg"),file))
+            .build()
+
+        val request = Request.Builder()
+            .url(url)
+            .post(formBody)
+            .build()
+
+
+        val call = client.newCall(request)
+        call.enqueue(callback)
+        return call
     }
 
 

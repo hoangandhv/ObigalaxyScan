@@ -2,26 +2,31 @@ package com.netfin.surfaceview
 
 import android.Manifest.permission.CAMERA
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.hardware.Camera
 import android.net.Uri
-import android.os.Build
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Environment
 import android.view.SurfaceHolder
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_image_scan.view.*
 import okhttp3.*
-import org.json.JSONException
-import org.json.JSONObject
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -34,29 +39,37 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
     private var surfaceHolder: SurfaceHolder? = null
     private var camera: Camera? = null
     private val neededPermissions = arrayOf(CAMERA, WRITE_EXTERNAL_STORAGE)
-    private val INTENT_RESULT = 1
     var client = OkHttpClient()
+    var dialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         setContentView(R.layout.activity_main)
-
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         val result = checkPermission()
         if (result) {
-            val intent = Intent(this@MainActivity, ScanActivity::class.java)
-            //startActivity(intent)
-            startActivityForResult(intent,INTENT_RESULT)
+            startScanQrcode()
             setupSurfaceHolder()
-            //setupSurfaceHolder()
-
         }
 
     }
+    private fun startScanQrcode(){
+
+        val integrator: IntentIntegrator = IntentIntegrator(this)
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        integrator.setPrompt("Scan a Qr code")
+        integrator.setCameraId(0)  // Use a specific camera of the device
+        integrator.setBeepEnabled(false)
+        integrator.setBarcodeImageEnabled(false)
+        integrator.initiateScan()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-
+        NAME_IMAGE = result.contents
         val timer = object: CountDownTimer(4000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 txt_time.text = ""+(millisUntilFinished/1000)
@@ -137,20 +150,11 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
 
     private fun setupSurfaceHolder() {
         surfaceView.visibility = View.VISIBLE
-
-
         surfaceHolder = surfaceView.holder
         surfaceHolder?.addCallback(this)
-        //setBtnClick()
 
     }
 
-    /*private fun setBtnClick() {
-        startBtn.setOnClickListener {
-            captureImage()
-        }
-    }
-*/
     private fun captureImage() {
         txt_time.text = ""
         if (camera != null) {
@@ -231,25 +235,40 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         try {
             val fileName = "ObiGalaxy_" + System.currentTimeMillis() + ".jpg"
             val file = File(Environment.getExternalStorageDirectory(), fileName)
+            var uri: Uri= Uri.fromFile(file)
             outStream = FileOutputStream(file)
             outStream.write(bytes)
             outStream.close()
+            showDialog(uri)
             val url = "http://10.10.10.43/api/upload"
             POST(url, file,fileName, object: Callback {
-                override fun onResponse(call: Call?, response: Response) {
-                    val responseData = response.body()?.string()
+
+                override fun onResponse(call: Call, response: Response) {
+                    val responseData = response.body?.string()
                     runOnUiThread{
                         //println("----------------->>$responseData")
                         Toast.makeText(this@MainActivity,"Thành công!",Toast.LENGTH_LONG).show()
+                        val handles = Handler()
+                        handles.postDelayed({
+                            startScanQrcode()
+                            dialog!!.dismiss()
+                        },5000)
                     }
                 }
+                override fun onFailure(call: Call, e: IOException) {
+                    runOnUiThread{
+                        println("-------------------Lỗi>> $e")
+                        Toast.makeText(this@MainActivity,"Lỗi. Vui lòng chụp lại!",Toast.LENGTH_LONG).show()
+                        dialog!!.dismiss()
+                        val handles = Handler()
+                        handles.postDelayed({
+                            startScanQrcode()
+                        },1000)
+                    }
 
-                override fun onFailure(call: Call?, e: IOException?) {
-                    //println("Request Failure.$e")
-                    Toast.makeText(this@MainActivity,"Lỗi. Vui lòng chụp lại!",Toast.LENGTH_LONG).show()
                 }
             })
-            Toast.makeText(this@MainActivity, "Picture Saved: $fileName", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this@MainActivity, "Picture Saved: $fileName", Toast.LENGTH_LONG).show()
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         } catch (e: IOException) {
@@ -261,12 +280,12 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         const val REQUEST_CODE = 100
         var NAME_IMAGE: String = ""
     }
-    fun POST(url: String, file: File,fileName:String, callback: Callback): Call {
+    private fun POST(url: String, file: File, fileName:String, callback: Callback): Call {
         Toast.makeText(this@MainActivity,"Vui lòng đợi!",Toast.LENGTH_LONG).show()
         val formBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("content","123")
-            .addFormDataPart("image",fileName, RequestBody.create(MediaType.parse("image/jpg"),file))
+            .addFormDataPart("content", NAME_IMAGE)
+            .addFormDataPart("image",fileName, file.asRequestBody("image/jpg".toMediaTypeOrNull()))
             .build()
 
         val request = Request.Builder()
@@ -279,6 +298,14 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         call.enqueue(callback)
         return call
     }
+    private fun showDialog(uri: Uri){
+        dialog = Dialog(this)
+        val dialogLayout = layoutInflater.inflate(R.layout.dialog_image_scan,null)
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog!!.setContentView(dialogLayout)
+        dialogLayout.img_View.setImageURI(uri)
+        dialog!!.show()
 
+    }
 
 }

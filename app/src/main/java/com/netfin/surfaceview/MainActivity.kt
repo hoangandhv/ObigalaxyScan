@@ -2,12 +2,12 @@ package com.netfin.surfaceview
 
 import android.Manifest.permission.CAMERA
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Rect
 import android.hardware.Camera
 import android.net.Uri
 import android.os.*
@@ -16,7 +16,6 @@ import android.view.SurfaceHolder
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -31,8 +30,8 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
 import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.PictureCallback {
 
@@ -47,7 +46,8 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         setContentView(R.layout.activity_main)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         val result = checkPermission()
         if (result) {
             startScanQrcode()
@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         }
 
     }
-    private fun startScanQrcode(){
+
+    private fun startScanQrcode() {
 
         val integrator: IntentIntegrator = IntentIntegrator(this)
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
@@ -64,15 +65,16 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         integrator.setBeepEnabled(false)
         integrator.setBarcodeImageEnabled(false)
         integrator.initiateScan()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
         NAME_IMAGE = result.contents
-        val timer = object: CountDownTimer(4000, 1000) {
+        val timer = object : CountDownTimer(4000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                txt_time.text = ""+(millisUntilFinished/1000)
+                txt_time.text = "" + (millisUntilFinished / 1000)
             }
 
             override fun onFinish() {
@@ -89,14 +91,19 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
             val permissionsNotGranted = ArrayList<String>()
             for (permission in neededPermissions) {
-                if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
                     permissionsNotGranted.add(permission)
                 }
             }
             if (permissionsNotGranted.size > 0) {
                 var shouldShowAlert = false
                 for (permission in permissionsNotGranted) {
-                    shouldShowAlert = ActivityCompat.shouldShowRequestPermissionRationale(this, permission)
+                    shouldShowAlert =
+                        ActivityCompat.shouldShowRequestPermissionRationale(this, permission)
                 }
 
                 val arr = arrayOfNulls<String>(permissionsNotGranted.size)
@@ -117,7 +124,11 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         alertBuilder.setCancelable(true)
         alertBuilder.setTitle(R.string.permission_required)
         alertBuilder.setMessage(R.string.permission_message)
-        alertBuilder.setPositiveButton(android.R.string.yes) { _, _ -> requestPermissions(permissions) }
+        alertBuilder.setPositiveButton(android.R.string.yes) { _, _ ->
+            requestPermissions(
+                permissions
+            )
+        }
         val alert = alertBuilder.create()
         alert.show()
     }
@@ -126,17 +137,25 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         ActivityCompat.requestPermissions(this@MainActivity, permissions, REQUEST_CODE)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             REQUEST_CODE -> {
                 for (result in grantResults) {
                     if (result == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(this@MainActivity, R.string.permission_warning, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            R.string.permission_warning,
+                            Toast.LENGTH_LONG
+                        ).show()
                         setViewVisibility(R.id.showPermissionMsg, View.VISIBLE)
                         return
                     }
                 }
-
+                startScanQrcode()
                 setupSurfaceHolder()
             }
         }
@@ -184,7 +203,7 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
             // the preview.
             parameters.also { params ->
 
-                params.setPictureSize(1280,720)
+                params.setPictureSize(1280, 720)
                 parameters = params
             }
 
@@ -235,35 +254,40 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         try {
             val fileName = "ObiGalaxy_" + System.currentTimeMillis() + ".jpg"
             val file = File(Environment.getExternalStorageDirectory(), fileName)
-            var uri: Uri= Uri.fromFile(file)
+            var uri: Uri = Uri.fromFile(file)
             outStream = FileOutputStream(file)
             outStream.write(bytes)
             outStream.close()
             showDialog(uri)
             val url = "http://10.10.10.43/api/upload"
-            POST(url, file,fileName, object: Callback {
+            POST(url, file, fileName, object : Callback {
 
                 override fun onResponse(call: Call, response: Response) {
                     val responseData = response.body?.string()
-                    runOnUiThread{
+                    runOnUiThread {
                         //println("----------------->>$responseData")
-                        Toast.makeText(this@MainActivity,"Thành công!",Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity, "Thành công!", Toast.LENGTH_LONG).show()
                         val handles = Handler()
                         handles.postDelayed({
                             startScanQrcode()
                             dialog!!.dismiss()
-                        },5000)
+                        }, 5000)
                     }
                 }
+
                 override fun onFailure(call: Call, e: IOException) {
-                    runOnUiThread{
+                    runOnUiThread {
                         println("-------------------Lỗi>> $e")
-                        Toast.makeText(this@MainActivity,"Lỗi. Vui lòng chụp lại!",Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Lỗi. Vui lòng kiểm tra lại hệ thống!",
+                            Toast.LENGTH_LONG
+                        ).show()
                         dialog!!.dismiss()
                         val handles = Handler()
                         handles.postDelayed({
                             startScanQrcode()
-                        },1000)
+                        }, 1000)
                     }
 
                 }
@@ -280,12 +304,13 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         const val REQUEST_CODE = 100
         var NAME_IMAGE: String = ""
     }
-    private fun POST(url: String, file: File, fileName:String, callback: Callback): Call {
-        Toast.makeText(this@MainActivity,"Vui lòng đợi!",Toast.LENGTH_LONG).show()
+
+    private fun POST(url: String, file: File, fileName: String, callback: Callback): Call {
+        Toast.makeText(this@MainActivity, "Vui lòng đợi!", Toast.LENGTH_LONG).show()
         val formBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart("content", NAME_IMAGE)
-            .addFormDataPart("image",fileName, file.asRequestBody("image/jpg".toMediaTypeOrNull()))
+            .addFormDataPart("image", fileName, file.asRequestBody("image/jpg".toMediaTypeOrNull()))
             .build()
 
         val request = Request.Builder()
@@ -298,9 +323,10 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         call.enqueue(callback)
         return call
     }
-    private fun showDialog(uri: Uri){
+
+    private fun showDialog(uri: Uri) {
         dialog = Dialog(this)
-        val dialogLayout = layoutInflater.inflate(R.layout.dialog_image_scan,null)
+        val dialogLayout = layoutInflater.inflate(R.layout.dialog_image_scan, null)
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog!!.setContentView(dialogLayout)
         dialogLayout.img_View.setImageURI(uri)

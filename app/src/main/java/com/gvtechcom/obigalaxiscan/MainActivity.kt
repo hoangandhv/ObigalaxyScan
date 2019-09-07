@@ -1,4 +1,4 @@
-package com.netfin.surfaceview
+package com.gvtechcom.obigalaxiscan
 
 import android.Manifest.permission.CAMERA
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.zxing.integration.android.IntentIntegrator
+import com.gvtechcom.obigalaxiscan.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_image_scan.view.*
 import okhttp3.*
@@ -134,7 +135,9 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
     }
 
     private fun requestPermissions(permissions: Array<String?>) {
-        ActivityCompat.requestPermissions(this@MainActivity, permissions, REQUEST_CODE)
+        ActivityCompat.requestPermissions(this@MainActivity, permissions,
+            REQUEST_CODE
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -309,7 +312,9 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback, Camera.Picture
         Toast.makeText(this@MainActivity, "Vui lòng đợi!", Toast.LENGTH_LONG).show()
         val formBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("content", NAME_IMAGE)
+            .addFormDataPart("content",
+                NAME_IMAGE
+            )
             .addFormDataPart("image", fileName, file.asRequestBody("image/jpg".toMediaTypeOrNull()))
             .build()
 

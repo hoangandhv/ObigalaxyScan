@@ -7,11 +7,10 @@
 
 
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+<!--    <TextureView-->
+<!--        android:id="@+id/textureView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
 
 
     <TextView
@@ -20,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="24dp"
-        android:textColor="@color/colorWhile"
+        android:textColor="@color/colorPrimary"
         android:text="@string/take_photo" />
 
     <TextView

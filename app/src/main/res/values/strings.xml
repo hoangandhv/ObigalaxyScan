@@ -5,4 +5,7 @@
     <string name="permission_message">You must grant permission to access camera and external storage to run this application.</string>
     <string name="permission_warning">All permissions are required.</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

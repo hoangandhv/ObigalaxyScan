@@ -19,68 +19,68 @@
 19    android:versionName=".debug" >
 20
 21    <uses-sdk android:minSdkVersion="14" />
-21-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml
+21-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml
 22
 23    <uses-permission android:name="android.permission.CAMERA" />
-23-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:19:3-62
-23-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:19:20-60
+23-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:19:3-62
+23-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:19:20-60
 24
 25    <!-- Don't require camera, as this requires a rear camera. This allows it to work on the Nexus 7 -->
 26    <uses-feature
-26-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:22:3-82
+26-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:22:3-82
 27        android:name="android.hardware.camera"
-27-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:22:17-55
+27-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:22:17-55
 28        android:required="false" />
-28-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:22:56-80
+28-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:22:56-80
 29    <uses-feature
-29-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:23:3-88
+29-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:23:3-88
 30        android:name="android.hardware.camera.front"
-30-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:23:17-61
+30-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:23:17-61
 31        android:required="false" />
-31-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:23:62-86
+31-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:23:62-86
 32    <!-- TODO replace above two with next line after Android 4.2 -->
 33    <!-- <uses-feature android:name="android.hardware.camera.any"/> -->
 34    <uses-feature
-34-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:26:3-92
+34-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:26:3-92
 35        android:name="android.hardware.camera.autofocus"
-35-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:26:17-65
+35-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:26:17-65
 36        android:required="false" />
-36-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:26:66-90
+36-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:26:66-90
 37    <uses-feature
-37-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:27:3-88
+37-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:27:3-88
 38        android:name="android.hardware.camera.flash"
-38-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:27:17-61
+38-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:27:17-61
 39        android:required="false" />
-39-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:27:62-86
+39-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:27:62-86
 40    <uses-feature
-40-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:28:3-93
+40-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:28:3-93
 41        android:name="android.hardware.screen.landscape"
-41-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:28:17-65
+41-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:28:17-65
 42        android:required="false" />
-42-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:28:66-90
+42-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:28:66-90
 43    <uses-feature
-43-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:29:3-80
+43-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:29:3-80
 44        android:name="android.hardware.wifi"
-44-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:29:17-53
+44-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:29:17-53
 45        android:required="false" />
-45-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:29:54-78
+45-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:29:54-78
 46
 47    <application>
-47-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:32:3-39:17
+47-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:32:3-39:17
 48        <activity
-48-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:33:7-38:66
+48-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:33:7-38:66
 49            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-49-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:33:17-78
+49-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:33:17-78
 50            android:clearTaskOnLaunch="true"
-50-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:34:17-49
+50-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:34:17-49
 51            android:screenOrientation="sensorLandscape"
-51-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:35:17-60
+51-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:35:17-60
 52            android:stateNotNeeded="true"
-52-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:36:17-46
+52-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:36:17-46
 53            android:theme="@style/zxing_CaptureTheme"
-53-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:37:17-58
+53-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:37:17-58
 54            android:windowSoftInputMode="stateAlwaysHidden" />
-54-->E:\Android Kotlin\surfaceview_v2\zxing-android-embedded\AndroidManifest.xml:38:17-64
+54-->D:\Android project\ObigalaxyScan\zxing-android-embedded\AndroidManifest.xml:38:17-64
 55    </application>
 56
 57</manifest>

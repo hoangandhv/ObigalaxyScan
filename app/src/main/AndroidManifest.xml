@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-feature android:name="android.hardware.camera2.full" />
 
     <application
@@ -16,10 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TakePhotoSurefaceviewActivity"></activity>
-        <activity
-            android:name=".TakePhotoActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".BarCodeViewActivity"
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape">

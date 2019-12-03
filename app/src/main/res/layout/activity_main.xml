@@ -20,7 +20,7 @@
         android:layout_gravity="center"
         android:textSize="24dp"
         android:textColor="@color/colorPrimary"
-        android:text="@string/take_photo" />
+        android:text="OBI GALAXY" />
 
     <TextView
         android:id="@+id/showPermissionMsg"

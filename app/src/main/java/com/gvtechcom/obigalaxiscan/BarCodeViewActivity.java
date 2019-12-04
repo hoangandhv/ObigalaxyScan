@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,9 +14,13 @@ import android.os.Environment;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -51,6 +56,9 @@ public class BarCodeViewActivity extends AppCompatActivity {
     private String lastText;
     Dialog dialog;
     private static String fileNametTime;
+    SharedPreferences sharedPreferences;
+    Switch aSwitch;
+    Button btnScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +69,47 @@ public class BarCodeViewActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
-
-        callScan();
+        aSwitch = findViewById(R.id.btn_switch);
+        btnScan = findViewById(R.id.btn_scan);
+        sharedPreferences = getSharedPreferences("ObigalaxyScan",MODE_PRIVATE);
+        String checkSwitch = sharedPreferences.getString("aSwitch","true");
+        btnScan.setVisibility(View.GONE);
+        if (checkSwitch.equals("false")){
+            aSwitch.setChecked(false);
+        } else aSwitch.setChecked(true);
+        //callScan();
 
     }
+
+    @Override
+    protected void onStart() {
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                sharedPreferences.edit ().putString("aSwitch",aSwitch.isChecked()?"true":"false").commit();
+                barcodeView.setStatusText("Lựa chọn áp dụng cho các lượt tiếp theo.");
+            }
+        });
+        btnScan.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                btnScan.setVisibility(View.GONE);
+                barcodeView.setStatusText("Đang quét ảnh...");
+                callScan();
+            }
+        });
+        super.onStart();
+    }
+
     private void callScan(){
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
         barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
         barcodeView.initializeFromIntent(getIntent());
         barcodeView.decodeContinuous(callback);
         beepManager = new BeepManager(this);
+        if (aSwitch.isChecked()){
+            barcodeView.setStatusText("Quét mã code và chụp ảnh.");
+        } else barcodeView.setStatusText("Quét mã code.");
     }
 
     private BarcodeCallback callback = new BarcodeCallback() {
@@ -171,7 +210,14 @@ public class BarCodeViewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        callScan();
+        if (aSwitch.isChecked()){
+            callScan();
+            btnScan.setVisibility(View.GONE);
+            barcodeView.setStatusText("Đang quét ảnh...");
+        } else {
+            barcodeView.setStatusText("Bấm vào SCAN để quét ảnh.");
+            btnScan.setVisibility(View.VISIBLE);
+        }
         barcodeView.resume();
     }
 

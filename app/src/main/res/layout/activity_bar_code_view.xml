@@ -11,6 +11,27 @@
         android:layout_height="match_parent">
 
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+    <Switch
+    android:id="@+id/btn_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right|top"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:text="Auto"
+    android:theme="@style/SwitchTheme"
+    android:textColor="@color/colorWhile"/>
+    <Button
+        android:id="@+id/btn_scan"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="SCAN"
+        android:textSize="12sp"
+        android:textColor="@color/colorWhile"
+        android:background="@drawable/bg_circle"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginEnd="16dp"
+        android:alpha="0.7"/>
 
 
 </FrameLayout>

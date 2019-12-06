@@ -88,6 +88,7 @@ public class BarCodeViewActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 sharedPreferences.edit ().putString("aSwitch",aSwitch.isChecked()?"true":"false").commit();
                 barcodeView.setStatusText("Lựa chọn áp dụng cho các lượt tiếp theo.");
+                finish();
             }
         });
         btnScan.setOnClickListener(new OnClickListener(){
